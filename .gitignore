@@ -1,0 +1,16 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.so
+
+# Virtual environments
+.venv/
+env/
+
+# Local environment file
+.env
+
+# Editor folders
+.vscode/
+.idea/
+scraper/storage/service-account.json
