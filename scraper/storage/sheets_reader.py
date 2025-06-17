@@ -1,3 +1,4 @@
+import json
 import logging
 import os
 import gspread
@@ -15,24 +16,19 @@ logger = logging.getLogger(__name__)
 
 @lru_cache(maxsize=1)
 def _init_workbook() -> Spreadsheet:
-    """Lazily initialize the Google Sheets workbook using service account credentials."""
-    
-    keyfile = os.getenv("GOOGLE_SERVICE_ACCOUNT_FILE")
-    sheet_id = os.getenv("GOOGLE_SHEET_ID")
-    if not keyfile or not sheet_id:
-        raise RuntimeError("Missing GOOGLE_SERVICE_ACCOUNT_FILE or GOOGLE_SHEET_ID")
+    sheet_id    = os.getenv("GOOGLE_SHEET_ID")
+    key_json    = os.getenv("GCP_SA_KEY_JSON")
+    if not sheet_id or not key_json:
+        raise RuntimeError("Missing GOOGLE_SHEET_ID or GCP_SA_KEY_JSON")
 
-    try:
-        creds = Credentials.from_service_account_file(
-            keyfile, scopes=["https://www.googleapis.com/auth/spreadsheets"]
-        )
-        client = gspread.authorize(creds)
-        wb = client.open_by_key(sheet_id)
-        logger.info("Google Sheet opened successfully")
-        return wb
-    except Exception as e:
-        logger.error("Failed to initialize workbook", exc_info=True)
-        raise
+    info = json.loads(key_json)
+    creds = Credentials.from_service_account_info(
+        info, scopes=["https://www.googleapis.com/auth/spreadsheets"]
+    )
+    client = gspread.authorize(creds)
+    wb     = client.open_by_key(sheet_id)
+    logger.info("Google Sheet opened successfully")
+    return wb
 
 
 def get_workbook() -> Spreadsheet:

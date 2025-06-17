@@ -13,4 +13,3 @@ env/
 # Editor folders
 .vscode/
 .idea/
-scraper/storage/service-account.json

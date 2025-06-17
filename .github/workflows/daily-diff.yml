@@ -11,6 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
+
+      GCP_SA_KEY_JSON: ${{ secrets.GCP_SA_KEY_JSON }}
+      GOOGLE_SHEET_ID: ${{ secrets.GOOGLE_SHEET_ID }}
+
       SMTP_HOST: ${{ secrets.SMTP_HOST }}
       SMTP_PORT: ${{ secrets.SMTP_PORT }}
       SMTP_USER: ${{ secrets.SMTP_USER }}
