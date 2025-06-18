@@ -41,6 +41,10 @@ def main():
     # Fetch raw records from all sites
     raw_site_records = get_site_records()
 
+    #For site fetcher test
+    #print(raw_site_records)
+    #return
+
     # Lazily‐initialized the sheet records
     raw_sheet_records = get_product_records()
 

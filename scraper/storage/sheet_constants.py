@@ -3,7 +3,7 @@ PRODUCTS_SHEET = "Products"
 DIFFERENCES_SHEET = "Differences"
 LAST_RUN_SHEET = "Last Run"
 
-#For testing purposes, we use different sheet names
+# For testing purposes, we use different sheet names
 # PRODUCTS_SHEET = "Products_Test"
 # DIFFERENCES_SHEET = "Differences_Test"
 
@@ -29,6 +29,7 @@ PRODUCT_HEADERS = [
     COL_PRICE,
     COL_DESCRIPTION,
 ]
+
 DIFFERENCE_HEADERS = [
     COL_DATE,
     COL_RESTAURANT,
