@@ -3,51 +3,27 @@ import logging
 import requests
 from typing import Any, Dict, List
 from requests.exceptions import RequestException
-from scraper.sites import bellozzo, etna
-from scraper.storage.sheet_constants import *
+from scraper.storage.sheet_constants import (
+    COL_RESTAURANT,
+    COL_TYPE,
+    COL_NAME,
+    COL_PRICE,
+    COL_DESCRIPTION,
+)
+from .sites import SITES
 
 logger = logging.getLogger(__name__)
-
-_SITES = [
-    {
-        "id": "bellozzo_pizza",
-        "restaurant": "Bellozzo",
-        "product_type": "pizza",
-        "url": "https://www.bellozzo.hu/menunk/pizzak.html",
-        "parser": bellozzo.parse,
-    },
-    {
-        "id": "bellozzo_pasta",
-        "restaurant": "Bellozzo",
-        "product_type": "pasta",
-        "url": "https://www.bellozzo.hu/menunk/tesztak.html",
-        "parser": bellozzo.parse,
-    },
-    {
-        "id": "etna_pizza",
-        "restaurant": "Etna",
-        "product_type": "pizza",
-        "url": "https://pastapizzatogo.hu/?n=view&sec=mypizza",
-        "parser": etna.pizzaparse,
-    },
-    {
-        "id": "etna_pasta",
-        "restaurant": "Etna",
-        "product_type": "pasta",
-        "url": "https://pastapizzatogo.hu/?n=view&sec=pasta",
-        "parser": etna.pastaparse,
-    },
-]
 
 
 def _fetch_html(url: str) -> str:
     """Fetch HTML content from a given URL, and save a copy to scraper/site.html."""
+
     response = requests.get(url, timeout=10)
     response.raise_for_status()
     html = response.text
 
     # Save the fetched HTML for debugging
-    #_save_html(html, "site.html") 
+    # _save_html(html, "site.html")
 
     return html
 
@@ -57,7 +33,7 @@ def get_site_records() -> List[Dict[str, Any]]:
 
     raw_site_records = []
 
-    for site in _SITES:
+    for site in SITES:
 
         try:
             html = _fetch_html(site["url"])
@@ -80,13 +56,9 @@ def get_site_records() -> List[Dict[str, Any]]:
         if not isinstance(parsed, list):
             raise ValueError(f"Parser {site['id']} returned non-list: {type(parsed)}")
 
-        try:
-            raw_site_records.extend(parsed)
-        except Exception as e:
-            logger.error(
-                "Failed to accumulate records for %s: %s", site["id"], e, exc_info=True
-            )
-            raise
+       
+        raw_site_records.extend(parsed)
+
 
     logger.info("Total new records fetched: %d", len(raw_site_records))
 

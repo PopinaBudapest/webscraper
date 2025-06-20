@@ -8,6 +8,7 @@ from scraper.storage.sheet_constants import (
     PRODUCTS_SHEET,
     DIFFERENCES_SHEET,
     LAST_RUN_SHEET,
+    AVERAGES_SHEET,
 )
 from functools import lru_cache
 
@@ -16,8 +17,8 @@ logger = logging.getLogger(__name__)
 
 @lru_cache(maxsize=1)
 def _init_workbook() -> Spreadsheet:
-    sheet_id    = os.getenv("GOOGLE_SHEET_ID")
-    key_json    = os.getenv("GCP_SA_KEY_JSON")
+    sheet_id = os.getenv("GOOGLE_SHEET_ID")
+    key_json = os.getenv("GCP_SA_KEY_JSON")
     if not sheet_id or not key_json:
         raise RuntimeError("Missing GOOGLE_SHEET_ID or GCP_SA_KEY_JSON")
 
@@ -26,7 +27,7 @@ def _init_workbook() -> Spreadsheet:
         info, scopes=["https://www.googleapis.com/auth/spreadsheets"]
     )
     client = gspread.authorize(creds)
-    wb     = client.open_by_key(sheet_id)
+    wb = client.open_by_key(sheet_id)
     logger.info("Google Sheet opened successfully")
     return wb
 
@@ -41,6 +42,10 @@ def get_products_ws() -> Worksheet:
 
 def get_differences_ws() -> Worksheet:
     return get_workbook().worksheet(DIFFERENCES_SHEET)
+
+
+def get_averages_ws() -> Worksheet:
+    return get_workbook().worksheet(AVERAGES_SHEET)
 
 
 def get_last_run_ws() -> Worksheet:

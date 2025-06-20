@@ -1,13 +1,15 @@
 # sheet names
 PRODUCTS_SHEET = "Products"
 DIFFERENCES_SHEET = "Differences"
+AVERAGES_SHEET = "Averages"
 LAST_RUN_SHEET = "Last Run"
 
-# For testing purposes, we use different sheet names
-# PRODUCTS_SHEET = "Products_Test"
-# DIFFERENCES_SHEET = "Differences_Test"
+# For testing purposes, different sheet names
+# PRODUCTS_SHEET = "Products (Test)"
+# DIFFERENCES_SHEET = "Differences (Test)"
+# AVERAGES_SHEET = "Averages (Test)"
+# LAST_RUN_SHEET = "Last Run"
 
-# column names
 COL_DATE = "Date"
 COL_RESTAURANT = "Restaurant"
 COL_TYPE = "Type"
@@ -19,10 +21,10 @@ COL_OLD_PRICE = "Old Price"
 COL_NEW_DESCRIPTION = "New Description"
 COL_OLD_DESCRIPTION = "Old Description"
 COL_COMMENT = "Comment"
+COL_COUNT = "Count"
+COL_AVERAGE = "Average"
 
-# header order for writes
-PRODUCT_HEADERS = [
-    COL_DATE,
+PRODUCTS_HEADER = [
     COL_RESTAURANT,
     COL_TYPE,
     COL_NAME,
@@ -30,7 +32,7 @@ PRODUCT_HEADERS = [
     COL_DESCRIPTION,
 ]
 
-DIFFERENCE_HEADERS = [
+DIFFERENCES_HEADER = [
     COL_DATE,
     COL_RESTAURANT,
     COL_TYPE,
@@ -40,4 +42,11 @@ DIFFERENCE_HEADERS = [
     COL_OLD_DESCRIPTION,
     COL_NEW_DESCRIPTION,
     COL_COMMENT,
+]
+
+AVERAGES_HEADER = [
+    COL_RESTAURANT,
+    COL_TYPE,
+    COL_COUNT,
+    COL_AVERAGE,
 ]

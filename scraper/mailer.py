@@ -1,10 +1,10 @@
 import os
 import smtplib
 from email.message import EmailMessage
-from typing import Any, List
+from typing import Any, Dict, List
 from datetime import datetime
 
-from scraper.storage.sheet_constants import DIFFERENCE_HEADERS as HEADERS
+from scraper.storage.sheet_constants import DIFFERENCES_HEADER
 
 
 def send_diff_email(
@@ -41,22 +41,27 @@ def send_diff_email(
 
 
 def prepare_email_body(
-    records: List[List[Any]], output_file: str = "diff.html"
+    records: List[Dict[str, Any]], output_file: str = "diff.html"
 ) -> None:
-    """
-    Generate an HTML report of diff records and write it to `output_file`.
-    """
-    # Build the inner HTML for either a “no changes” message or a table
+    """Generate an HTML report of diff records (dicts) and write it to `output_file`."""
+
+    # Build inner HTML
     if not records:
         body = "<p><em>No differences detected today.</em></p>"
     else:
         # Header row
-        header_row = "".join(f"<th>{col}</th>" for col in HEADERS)
+        header_row = "".join(f"<th>{col}</th>" for col in DIFFERENCES_HEADER)
+
         # Data rows
         data_rows = ""
-        for row in records:
-            cells = "".join(f"<td>{cell}</td>" for cell in row)
+        for rec in records:
+            cells = "".join(
+                # get each column in defined order; fall back to blank
+                f"<td>{rec.get(col, '') if rec.get(col, '') is not None else ''}</td>"
+                for col in DIFFERENCES_HEADER
+            )
             data_rows += f"<tr>{cells}</tr>\n"
+
         body = f"""
         <table>
           <thead><tr>{header_row}</tr></thead>
@@ -66,7 +71,8 @@ def prepare_email_body(
         </table>
         """
 
-    # Full HTML
+    # Wrap in full HTML
+    now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     html = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -80,7 +86,7 @@ def prepare_email_body(
   </style>
 </head>
 <body>
-  <h2>Diff Report — {datetime.now().strftime("%Y-%m-%d %H:%M:%S")}</h2>
+  <h2>Diff Report — {now}</h2>
   {body}
 </body>
 </html>"""
