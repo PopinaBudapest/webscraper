@@ -1,14 +1,12 @@
 # sheet names
-PRODUCTS_SHEET = "Products"
-DIFFERENCES_SHEET = "Differences"
-AVERAGES_SHEET = "Averages"
-LAST_RUN_SHEET = "Last Run"
+# PRODUCTS_SHEET = "Products"
+# DIFFERENCES_SHEET = "Differences"
+# AVERAGES_SHEET = "Averages"
 
 # For testing purposes, different sheet names
-# PRODUCTS_SHEET = "Products (Test)"
-# DIFFERENCES_SHEET = "Differences (Test)"
-# AVERAGES_SHEET = "Averages (Test)"
-# LAST_RUN_SHEET = "Last Run"
+PRODUCTS_SHEET = "Products (Test)"
+DIFFERENCES_SHEET = "Differences (Test)"
+AVERAGES_SHEET = "Averages (Test)"
 
 COL_DATE = "Date"
 COL_RESTAURANT = "Restaurant"

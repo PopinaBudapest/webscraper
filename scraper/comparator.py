@@ -41,8 +41,12 @@ def get_product_changes(
             )
         else:
             sheet_r = sheet_map[k]
-            old_p, new_p = sheet_r["Price"], site_r["Price"]
-            old_d, new_d = sheet_r["Description"], site_r["Description"]
+
+            old_p = int(sheet_r["Price"])
+            new_p = int(site_r["Price"])
+
+            old_d = sheet_r["Description"].strip()
+            new_d = site_r["Description"].strip()
 
             price_changed = old_p != new_p
             desc_changed = old_d != new_d

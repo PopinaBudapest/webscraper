@@ -29,31 +29,31 @@ def main():
 
     # Fetch records from all sites and from Google Sheets
     site_records = get_site_records()
-    sheet_records = get_product_records()
+    sheet_records = get_product_records("A3", "E250", header_row=2)
 
     # Compare the records and get the differences
     diff_records = get_product_changes(
         site_records=site_records,
         sheet_records=sheet_records,
-    )  
+    )
 
     if diff_records:
 
-        bulk_append_products(site_records)
-        bulk_append_differences(diff_records)
+        bulk_append_products(site_records, "A3", "E250")
+        bulk_append_differences(diff_records, "A2")
 
         average_records = get_type_averages(site_records)
-        bulk_replace_averages(average_records)
+        bulk_replace_averages(average_records, "A4", "D50")
 
         prepare_email_body(diff_records)
 
-        send_diff_email(
-            html_file="diff.html",
-            subject="🚨 Diff Report: changes detected",
-        )
+        # send_diff_email(
+        #     html_file="diff.html",
+        #     subject="🚨 Diff Report: changes detected",
+        # )
 
     # Set the execution date in the last run worksheet
-    set_execution_date()
+    set_execution_date("A1")
 
 
 if __name__ == "__main__":

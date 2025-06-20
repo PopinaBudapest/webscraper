@@ -2,12 +2,12 @@ import json
 import logging
 import os
 import gspread
+from typing import Any, Dict, List
 from gspread import Spreadsheet, Worksheet
 from google.oauth2.service_account import Credentials
 from scraper.storage.sheet_constants import (
     PRODUCTS_SHEET,
     DIFFERENCES_SHEET,
-    LAST_RUN_SHEET,
     AVERAGES_SHEET,
 )
 from functools import lru_cache
@@ -48,15 +48,21 @@ def get_averages_ws() -> Worksheet:
     return get_workbook().worksheet(AVERAGES_SHEET)
 
 
-def get_last_run_ws() -> Worksheet:
-    return get_workbook().worksheet(LAST_RUN_SHEET)
+def get_product_records(
+    start_cell: str, end_cell: str, header_row: int = 2
+) -> List[Dict[str, Any]]:
 
+    cell_range = f"{start_cell}:{end_cell}"
 
-def get_product_records() -> dict:
     try:
-        raw = get_products_ws().get_all_records()
-        logger.info(f"Loaded {len(raw)} products from '{PRODUCTS_SHEET}'")
-        return raw
+        ws = get_products_ws()
+        headers = ws.row_values(header_row)
+        values = ws.get_values(cell_range)
+        records = [dict(zip(headers, row)) for row in values if any(row)]
+        logger.info(
+            f"Loaded {len(records)} products from '{PRODUCTS_SHEET}' in range {cell_range}"
+        )
+        return records
     except gspread.APIError:
-        logger.error("Failed to fetch existing products", exc_info=True)
+        logger.error("Failed to fetch products from range", exc_info=True)
         raise
