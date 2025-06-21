@@ -2,6 +2,7 @@ from typing import Dict, List
 
 from scraper.parsers import bellozzo
 from scraper.parsers import etna
+from scraper.parsers import donnamamma
 
 
 SITES: List[Dict[str,any]] = [
@@ -32,5 +33,23 @@ SITES: List[Dict[str,any]] = [
         "product_type": "pasta",
         "url": "https://pastapizzatogo.hu/?n=view&sec=pasta",
         "parser": etna.pastaparse,
+    },
+    {
+        "id": "donnamamma_pizza",
+        "restaurant": "Donna Mamma",
+        "product_type": "pizza",
+        "url": "https://www.donnamamma.hu/etlap/",
+        "parser": donnamamma.parse,
+    },
+]
+
+
+SITES_TO_TEST: List[Dict[str,any]] = [
+    {
+        "id": "donnamamma_pizza",
+        "restaurant": "Donna Mamma",
+        "product_type": "pizza",
+        "url": "https://www.donnamamma.hu/etlap/",
+        "parser": donnamamma.parse,
     },
 ]

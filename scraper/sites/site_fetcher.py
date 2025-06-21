@@ -3,14 +3,7 @@ import logging
 import requests
 from typing import Any, Dict, List
 from requests.exceptions import RequestException
-from scraper.storage.sheet_constants import (
-    COL_RESTAURANT,
-    COL_TYPE,
-    COL_NAME,
-    COL_PRICE,
-    COL_DESCRIPTION,
-)
-from .sites import SITES
+from .sites import SITES, SITES_TO_TEST
 
 logger = logging.getLogger(__name__)
 
@@ -23,17 +16,24 @@ def _fetch_html(url: str) -> str:
     html = response.text
 
     # Save the fetched HTML for debugging
-    # _save_html(html, "site.html")
+    #_save_html(html, "site.html")
 
     return html
 
 
-def get_site_records() -> List[Dict[str, Any]]:
+def get_site_records(scope: str = "prod") -> List[Dict[str, Any]]:
     """Fetch and parse new records from all configured sites."""
 
     raw_site_records = []
 
-    for site in SITES:
+    if scope == "test":
+        sites = SITES_TO_TEST
+    elif scope == "prod":
+        sites = SITES
+    else:
+        raise ValueError(f"Invalid scope: {scope!r}. Use 'prod' or 'test'.")
+
+    for site in sites:
 
         try:
             html = _fetch_html(site["url"])

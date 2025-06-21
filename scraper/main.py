@@ -27,8 +27,11 @@ def main():
 
     logger.info("Starting the scraper...")
 
-    # Fetch records from all sites and from Google Sheets
+    # Fetch records from all or test sites
+    #site_records = get_site_records("test")
     site_records = get_site_records()
+
+    #Fetch Google Sheets records
     sheet_records = get_product_records("A3", "E250", header_row=2)
 
     # Compare the records and get the differences
@@ -47,10 +50,10 @@ def main():
 
         prepare_email_body(diff_records)
 
-        # send_diff_email(
-        #     html_file="diff.html",
-        #     subject="🚨 Diff Report: changes detected",
-        # )
+        send_diff_email(
+            html_file="diff.html",
+            subject="🚨 Diff Report: changes detected",
+        )
 
     # Set the execution date in the last run worksheet
     set_execution_date("A1")
