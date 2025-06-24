@@ -8,15 +8,16 @@ from .sites import SITES, SITES_TO_TEST
 logger = logging.getLogger(__name__)
 
 
-def _fetch_html(url: str) -> str:
-    """Fetch HTML content from a given URL, and save a copy to scraper/site.html."""
+def _fetch_html(site: Dict[str, any]) -> str:
 
-    response = requests.get(url, timeout=10)
+    DEBUG = False
+
+    response = requests.get(site["url"], timeout=10)
     response.raise_for_status()
     html = response.text
 
-    # Save the fetched HTML for debugging
-    #_save_html(html, "site.html")
+    if DEBUG:
+        _save_html(html, "site.html")
 
     return html
 
@@ -36,12 +37,12 @@ def get_site_records(scope: str = "prod") -> List[Dict[str, Any]]:
     for site in sites:
 
         try:
-            html = _fetch_html(site["url"])
-        except RequestException as e:
-            logger.error("Network error fetching %s: %s", site["url"], e, exc_info=True)
-            raise
 
-        try:
+            if site.get("needs_playwright"):
+                html = site["url"]  # No html, url is needed
+            else:
+                html = _fetch_html(site)
+
             parsed = site["parser"](
                 html,
                 {
@@ -56,9 +57,7 @@ def get_site_records(scope: str = "prod") -> List[Dict[str, Any]]:
         if not isinstance(parsed, list):
             raise ValueError(f"Parser {site['id']} returned non-list: {type(parsed)}")
 
-       
         raw_site_records.extend(parsed)
-
 
     logger.info("Total new records fetched: %d", len(raw_site_records))
 

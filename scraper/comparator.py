@@ -104,32 +104,34 @@ def get_product_changes(
     return changes
 
 
-def get_type_averages(
-    records: List[Dict[str, Any]],
-) -> List[Dict[str, Any]]:
-    """Calculate average prices for each (restaurant, product type)"""
+def get_type_averages(records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Calculate average, min, and max prices per (restaurant, type), with pizzas listed before pastas."""
 
-    # bucket: (Restaurant, Type) -> [prices...]
-    buckets: Dict[tuple, List[int]] = defaultdict(list)
+    buckets: Dict[Tuple[str, str], List[int]] = defaultdict(list)
 
     for rec in records:
         key = (rec[COL_RESTAURANT], rec[COL_TYPE])
         buckets[key].append(rec[COL_PRICE])
 
     summary: List[Dict[str, Any]] = []
-    # sort by restaurant then type for a predictable order
-    for restaurant, product_type in sorted(buckets):
+
+    def sort_key(item: Tuple[str, str]):
+        restaurant, type_ = item
+        return (0 if type_ == "pizza" else 1, restaurant, type_)
+
+    for restaurant, product_type in sorted(buckets, key=sort_key):
         prices = buckets[(restaurant, product_type)]
-        count = len(prices)
-        if count == 0:
+        if not prices:
             continue
-        avg_price = int(mean(prices))
+
         summary.append(
             {
                 COL_RESTAURANT: restaurant,
                 COL_TYPE: product_type,
-                COL_COUNT: count,
-                COL_AVERAGE: avg_price,
+                COL_COUNT: len(prices),
+                COL_AVERAGE: int(mean(prices)),
+                COL_LOWEST: min(prices),
+                COL_HIGHEST: max(prices),
             }
         )
 

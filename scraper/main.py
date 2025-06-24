@@ -25,13 +25,18 @@ logger = logging.getLogger(__name__)
 
 def main():
 
+    DEBUG = False
+
     logger.info("Starting the scraper...")
 
-    # Fetch records from all or test sites
-    #site_records = get_site_records("test")
-    site_records = get_site_records()
+    if DEBUG:
+        site_records = get_site_records("test")
+        print(site_records)
+        return
+    else:
+        site_records = get_site_records()
 
-    #Fetch Google Sheets records
+    # Fetch Google Sheets records
     sheet_records = get_product_records("A3", "E250", header_row=2)
 
     # Compare the records and get the differences
@@ -42,14 +47,14 @@ def main():
 
     if diff_records:
 
-        bulk_append_products(site_records, "A3", "E250")
+        if len(diff_records) <= 5:
+            bulk_append_products(site_records, "A3", "E250")
+            average_records = get_type_averages(site_records)
+            bulk_replace_averages(average_records, "A4", "D50")
+
         bulk_append_differences(diff_records, "A2")
 
-        average_records = get_type_averages(site_records)
-        bulk_replace_averages(average_records, "A4", "D50")
-
         prepare_email_body(diff_records)
-
         send_diff_email(
             html_file="diff.html",
             subject="🚨 Diff Report: changes detected",

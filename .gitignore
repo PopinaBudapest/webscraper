@@ -13,3 +13,5 @@ env/
 # Editor folders
 .vscode/
 .idea/
+
+# .storage/sheet_constants.py

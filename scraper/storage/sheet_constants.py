@@ -21,6 +21,8 @@ COL_OLD_DESCRIPTION = "Old Description"
 COL_COMMENT = "Comment"
 COL_COUNT = "Count"
 COL_AVERAGE = "Average"
+COL_LOWEST = "Lowest"
+COL_HIGHEST = "Highest"
 
 PRODUCTS_HEADER = [
     COL_RESTAURANT,
@@ -47,4 +49,6 @@ AVERAGES_HEADER = [
     COL_TYPE,
     COL_COUNT,
     COL_AVERAGE,
+    COL_LOWEST,
+    COL_HIGHEST,
 ]

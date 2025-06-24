@@ -1,11 +1,9 @@
-from typing import Dict, List
+from typing import Any, Dict, List
 
-from scraper.parsers import bellozzo
-from scraper.parsers import etna
-from scraper.parsers import donnamamma
+from scraper.parsers import bellozzo, pizzahut, etna, donnamamma
 
 
-SITES: List[Dict[str,any]] = [
+SITES: List[Dict[str, any]] = [
     {
         "id": "bellozzo_pizza",
         "restaurant": "Bellozzo",
@@ -41,15 +39,24 @@ SITES: List[Dict[str,any]] = [
         "url": "https://www.donnamamma.hu/etlap/",
         "parser": donnamamma.parse,
     },
+    {
+        "id": "pizzahut_pizza",
+        "restaurant": "Pizza Hut",
+        "product_type": "both",
+        "url": "https://pizzahut.hu/menu-takeaway#pizzak",
+        "needs_playwright": True,
+        "parser": pizzahut.parse,
+    },
 ]
 
 
-SITES_TO_TEST: List[Dict[str,any]] = [
+SITES_TO_TEST: List[Dict[str, Any]] = [
     {
-        "id": "donnamamma_pizza",
-        "restaurant": "Donna Mamma",
-        "product_type": "pizza",
-        "url": "https://www.donnamamma.hu/etlap/",
-        "parser": donnamamma.parse,
+        "id": "pizzahut_pizza",
+        "restaurant": "Pizza Hut",
+        "product_type": "both",
+        "url": "https://pizzahut.hu/menu-takeaway#pizzak",
+        "needs_playwright": True,
+        "parser": pizzahut.parse,
     },
 ]
