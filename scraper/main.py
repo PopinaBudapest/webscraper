@@ -50,7 +50,7 @@ def main():
         if len(diff_records) <= 5:
             bulk_append_products(site_records, "A3", "E250")
             average_records = get_type_averages(site_records)
-            bulk_replace_averages(average_records, "A4", "D50")
+            bulk_replace_averages(average_records, "A5", "D50")
 
         bulk_append_differences(diff_records, "A2")
 

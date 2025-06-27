@@ -1,10 +1,12 @@
 # sheet names
-PRODUCTS_SHEET = "Products"
+PIZZA_SHEET = "Pizza"
+PASTA_SHEET = "Pasta"
 DIFFERENCES_SHEET = "Differences"
 AVERAGES_SHEET = "Averages"
 
 # For testing purposes, different sheet names
-# PRODUCTS_SHEET = "Products (Test)"
+# PIZZA_SHEET = "Pizza (Test)"
+# PASTA_SHEET = "Pasta (Test)"
 # DIFFERENCES_SHEET = "Differences (Test)"
 # AVERAGES_SHEET = "Averages (Test)"
 
@@ -24,7 +26,15 @@ COL_AVERAGE = "Average"
 COL_LOWEST = "Lowest"
 COL_HIGHEST = "Highest"
 
-PRODUCTS_HEADER = [
+PIZZA_HEADER = [
+    COL_RESTAURANT,
+    COL_TYPE,
+    COL_NAME,
+    COL_PRICE,
+    COL_DESCRIPTION,
+]
+
+PASTA_HEADER = [
     COL_RESTAURANT,
     COL_TYPE,
     COL_NAME,

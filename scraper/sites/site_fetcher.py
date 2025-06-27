@@ -2,7 +2,6 @@ import os
 import logging
 import requests
 from typing import Any, Dict, List
-from requests.exceptions import RequestException
 from .sites import SITES, SITES_TO_TEST
 
 logger = logging.getLogger(__name__)
